@@ -7,7 +7,9 @@ const RegForm = () => {
             <form className='container'>
                 <div className='card'>
                     <div className='card-header'>
-
+                        <nav style={{ display: 'flex', justifyContent: 'center' }}>
+                            <h1> User Registration </h1>
+                        </nav>
                     </div>
                     <div className='card-body'>
                         
