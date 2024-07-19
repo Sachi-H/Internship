@@ -1,12 +1,18 @@
 import './App.css';
-import NavBarForm from './components/NavBarForm';
+import Home from './components/Home';
+import Login from './components/Login';
 import RegForm from './components/RegForm';
 
 function App() {
   return (
     <div className="App">
-      <NavBarForm />
-      <RegForm />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />}> </Route>
+          <Route path='/login' element={<Login />}> </Route>
+          <Route path='/registration' element={<RegForm />}> </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
