@@ -14,8 +14,12 @@ const RegForm = () => {
                     <div className='card-body'>
                         
                     </div>
-                    <div className='card-footer'>
-                        <button type='submit' className='btn btn-primary'> Register </button>
+                    <div className='flex justify-center'>
+                        <button type='submit' className='
+                          px-6 py-3 font-medium text-white  
+                          bg-green-700 hover:bg-green-800
+                          rounded-lg text-center'
+                        > Register </button>
                     </div>
                 </div>
             </form>    
