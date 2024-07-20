@@ -1,11 +1,9 @@
-import RegForm from './components/RegForm';
-import './App.css';
+import React from 'react';
+import RoutesConfig from './routes';
 
 function App() {
   return (
-    <div className="App">
-      <RegForm />
-    </div>
+    <RoutesConfig />
   );
 }
 
