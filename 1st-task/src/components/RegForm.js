@@ -235,7 +235,7 @@ const RegForm = () => {
                         <button type="submit" className='
                           mt-3 px-6 py-3 font-medium 
                           bg-[#42bb71] hover:bg-white 
-                          hover:border-[#42bb71] hover:border-2
+                          hover:shadow-[inset_0_0_0_2px_#42bb71]
                           text-white hover:text-[#42bb71]
                           rounded-lg text-center'
                         > Register </button>
