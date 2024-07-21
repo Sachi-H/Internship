@@ -6,8 +6,8 @@ const RoutesConfig = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={<RegForm />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegForm />} />
+        <Route path="/" exact element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
