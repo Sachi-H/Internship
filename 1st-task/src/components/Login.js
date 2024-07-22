@@ -1,68 +1,104 @@
-import React, { useEffect } from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  useEffect(() => {
-    const para = document.createElement("div");
-    para.className = 'flex flex-wrap gap-0.5 h-screen items-center justify-center relative';
-    
-    let el = '<div class="transition-colors duration-[1.5s] hover:duration-[0s] border-[#00FF00] h-[calc(5vw-2px)] w-[calc(5vw-2px)] md:h-[calc(4vw-2px)] md:w-[calc(4vw-2px)] lg:h-[calc(3vw-4px)] lg:w-[calc(3vw-4px)] bg-gray-900 hover:bg-[#00FF00]"></div>';
-    
-    for (let k = 1; k <= 1000; k++) {
-      el += '<div class="transition-colors duration-[1.5s] hover:duration-[0s] border-[#00FF00] h-[calc(5vw-2px)] w-[calc(5vw-2px)] md:h-[calc(4vw-2px)] md:w-[calc(4vw-2px)] lg:h-[calc(3vw-4px)] lg:w-[calc(3vw-4px)] bg-gray-900 hover:bg-[#00FF00]"></div>';
-    }
-    
-    para.innerHTML = el;
-    document.getElementById("myDIV").appendChild(para);
-  }, []);
-  
   return (
-    <div>
-      <div className='offset-lg-3 col-lg-6'>
-        <nav className="flex items-center justify-between flex-wrap bg-[#42bb71] p-6">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <span className="font-bold text-2xl tracking-tight">Internship - First Task</span>
+    <div className="bg-white dark:bg-gray-900">
+      <div className="flex justify-center h-screen">
+        <div
+          className="hidden bg-cover lg:block lg:w-2/3"
+          style={{
+            backgroundImage: 'url(https://static.vecteezy.com/system/resources/previews/031/351/947/non_2x/3d-rendering-technology-robotics-data-analytics-or-futuristic-cyborg-with-artificial-intelligence-concept-by-ai-generated-free-photo.jpg)',
+          }}
+        >
+          <div className="flex items-start justify-start h-full px-20 bg-gray-900 bg-opacity-40">
+            <div className="flex items-start justify-start">
+              <div>
+                <div className="flex flex-col">
+                  <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-64 h-auto' />
+                  <h1 className="max-w-xl mt-3 text-4xl font-bold leading-tight text-left text-green-500 text-shadow-lg">
+                    Empowering the Future of AI Technologies
+                  </h1>
+                  <div className="flex mt-60 justify-center space-x-12">
+                    <div className="flex-1 text-center max-w-md">
+                      <p className="text-gray-300 text-2xl font-semibold leading-relaxed text-left">
+                        Mission
+                      </p>
+                      <p className="mt-4 text-lg leading-relaxed text-gray-400 text-left">
+                      Hacktiv exists to democratize deep technologies, making them accessible to all organizations. By doing so, we drive transformative impact and enable businesses throughout the Philippines to harness the power of cutting-edge solutions.                      </p>
+                    </div>
+                    <div className="flex-1 text-center max-w-md">
+                      <p className="text-gray-300 text-2xl font-semibold leading-relaxed text-left">
+                        Purpose
+                      </p>
+                      <p className="mt-4 text-lg leading-relaxed text-gray-400 text-left">
+                        Hacktiv exists to democratize AI, making it accessible to all organizations. By doing so, we drive transformative impact and enable businesses throughout the Philippines to harness the power of cutting-edge AI solutions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center text-white text-l font-semibold">
-            <span>Don't have an account?</span>          
-            <Link to="/register" className="hover:text-[#414042] ml-3 underline hover:no-underline" 
-              style={{cursor: 'pointer'}}> Sign Up
-            </Link>
-          </div>
-        </nav>
+        </div>
 
-        <div className="body bg-white dark:bg-[#0F172A]">
-      <div className="bg-black before:animate-pulse before:bg-gradient-to-b before:from-gray-900 overflow-hidden before:via-[#00FF00] before:to-gray-900 before:absolute">
-        <div id="myDIV">
-          <div className="w-[100vw] h-[100vh] px-3 sm:px-5 flex items-center justify-center absolute">
-            <div className="w-full sm:w-1/2 lg:2/3 px-6 bg-gray-500 bg-opacity-20 bg-clip-padding backdrop-filter backdrop-blur-sm text-white z-50 py-4 rounded-lg">
-              <div className="w-full flex justify-center text-[#00FF00] text-xl mb:2 md:mb-5">
-                Sign In
-              </div>
-              <div className="mb-6">
-                <label htmlFor="email" className="block mb-2 text-xs font-medium text-white">Your email</label>
-                <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@neurolink.com" required />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="password" className="block mb-2 text-xs font-medium text-white">Your password</label>
-                <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-              </div>
-              <div className="flex flex-row justify-between">
-                <div className="text-white text-sm md:text-md">Forgot Password</div>
-                <div className="text-[#00FF00] text-sm md:text-md">Signup</div>
-              </div>
-              <div className="mt-4 md:mt-10 w-full flex justify-center text-sm md:text-xl bg-[#00FF00] py-2 rounded-md">
-                Login
-              </div>
+        <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+          <div className="flex-1">
+            <div className="text-center">
+              <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-48 h-auto' />
+              <p className="mt-3 text-gray-500 dark:text-gray-300">Sign in to access your account</p>
+            </div>
+
+            <div className="mt-8">
+              <form>
+                <div>
+                  <label htmlFor="email" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="example@example.com"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <div className="flex justify-between mb-2">
+                    <label htmlFor="password" className="text-sm text-gray-600 dark:text-gray-200">
+                      Password
+                    </label>
+                  </div>
+
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Your Password"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </form>
+
+              <p className="mt-6 text-sm text-center text-gray-400">
+                Don't have an account yet? <Link to="/register" className="text-blue-500 focus:outline-none focus:underline hover:underline">Sign up</Link>.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-      </div>
-    </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
