@@ -1,8 +1,9 @@
-import React, { useState, useEffect }from 'react'
+import React from 'react'
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import CryptoJS from 'crypto-js'; 
+import { saveFormData } from '../store/actions';
 
 const Container = styled.div`
   overflow: hidden;
@@ -17,56 +18,7 @@ const FormContainer = styled.form`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const RegForm = () => {
-  const navigate = useNavigate();
-  const [isRegistered, setIsRegistered] = useState(false);
-
-  useEffect(() => {
-    if (isRegistered) {
-      navigate('/', { replace: true });
-    }
-  }, [isRegistered, navigate]);
-
-  const handleSubmit = (values, { setSubmitting }, event) => {
-    if (!values.name || !values.number || !values.email || !values.address || !values.birthday || !values.password) {
-      alert('All fields must be filled up!');
-      setSubmitting(false);
-    } else {
-      const encryptedPassword = CryptoJS.AES.encrypt(values.password, 'secret key').toString();
-      const userData = {
-        name: values.name,
-        number: values.number,
-        email: values.email,
-        gender: values.gender,
-        address: values.address,
-        birthday: values.birthday,
-        password: encryptedPassword,
-      };
-  
-      // Check if the user data already exists in the JSON file
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      const isDuplicate = existingUsers.some((user) => {
-        return (
-          user.email === values.email ||
-          user.number === values.number ||
-          user.address === values.address
-        );
-      });
-  
-      if (isDuplicate) {
-        alert('All given information is already used!');
-        setSubmitting(false);
-      } else {
-        existingUsers.push(userData);
-        localStorage.setItem('users', JSON.stringify(existingUsers));
-        console.log(values);
-        setSubmitting(false);
-        setIsRegistered(true); // Update the isRegistered state to true
-        navigate('/', { replace: true }); // Redirect to login page
-      }
-    }
-  };
-
+const RegForm = ({ saveFormData }) => {
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -95,6 +47,12 @@ const RegForm = () => {
                 birthday: '',
                 password: '',
               }}
+
+              onSubmit={(values, { setSubmitting }) => {
+                saveFormData(values); // Dispatch action to save form data to Redux store
+                setSubmitting(false);
+              }}
+
               validate={(values) => {
                 const errors = {};
                 if (!values.name) {
@@ -146,7 +104,6 @@ const RegForm = () => {
                 return errors;
               }}
               validateOnChange={true}
-              onSubmit={handleSubmit}
             >
             {(formikProps) => (
               <Form>
@@ -244,4 +201,4 @@ const RegForm = () => {
   )
 }
 
-export default RegForm
+export default connect(null, { saveFormData })(RegForm);
