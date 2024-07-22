@@ -17,7 +17,7 @@ const Home = () => {
         </nav>
 
         <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
-          HOME PAGEEEEEEE
+          
         </div>
       </div>
     </div>
