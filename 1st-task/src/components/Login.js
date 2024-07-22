@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import{Formik, Field, Form} from 'formik';
+
 
 const Login = () => {
   return (
@@ -15,8 +17,8 @@ const Login = () => {
             <div className="flex items-start justify-start">
               <div>
                 <div className="flex flex-col">
-                  <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-64 h-auto' />
-                  <h1 className="max-w-xl mt-3 text-4xl font-bold leading-tight text-left text-green-500 text-shadow-lg">
+                  <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-64 h-auto mt-7' />
+                  <h1 className="max-w-xl mt-5 text-4xl font-bold leading-tight text-left text-green-500 text-shadow-lg">
                     Empowering the Future of AI Technologies
                   </h1>
                   <div className="flex mt-60 justify-center space-x-12">
@@ -80,12 +82,15 @@ const Login = () => {
                   />
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-6 justify-center">
                   <button
                     type="submit"
-                    className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                  >
-                    Sign in
+                    className=" w-full mt-3 px-6 py-3 tracking-wide font-medium 
+                      bg-[#42bb71] hover:bg-white 
+                      hover:shadow-[inset_0_0_0_2px_#42bb71]
+                      text-white hover:text-[#42bb71]
+                      rounded-lg text-center"    
+                  >Sign in
                   </button>
                 </div>
               </form>
