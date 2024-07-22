@@ -4,23 +4,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import CryptoJS from 'crypto-js'; 
 
+const Container = styled.div`
+  overflow: hidden;
+`;
+
 const CenteredForm = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 10px;
 `;
 
 const FormContainer = styled.form`
-  width: 550px;
+  max-width: 550px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const RegForm = () => {
@@ -74,22 +72,23 @@ const RegForm = () => {
   };
 
   return (
-    <div>
+    <Container>
         <div className='offset-lg-3 col-lg-6'>
-            <nav className="flex items-center justify-between flex-wrap bg-[#42bb71] p-6">
-              <div className="flex items-center flex-shrink-0 text-white mr-6">
-                <span className="font-bold text-2xl tracking-tight">Internship - First Task</span>
-              </div>
-              <div className="flex items-center text-white text-l font-semibold">
-                <span>Already have an account?</span>          
-                <Link to="/" className="hover:text-[#414042] ml-3 underline hover:no-underline" 
-                  style={{cursor: 'pointer'}}> Login
-                </Link>
-              </div>
-            </nav>
+          <nav className="flex items-center justify-between flex-wrap bg-white p-4">
+            <div className="flex items-center flex-shrink-0 text-white mr-6">
+              <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-48 h-15' />
+            </div>
+            <div className="flex items-center text-[#414042] text-l font-bold">
+              <span>Already have an account?</span>          
+              <Link to="/" className="hover:text-[#42bb71] ml-3 underline hover:no-underline" 
+                style={{cursor: 'pointer'}}> Login
+              </Link>
+            </div>
+          </nav>
 
-            <h1 className='mt-8 flex items-center justify-center text-[#414042] font-bold text-3xl'> User Registration </h1>
-            <CenteredForm className='mt-3'>
+          <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
+            <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
+            <CenteredForm>
               <FormContainer>
                 <Formik
                   initialValues={{
@@ -245,8 +244,9 @@ const RegForm = () => {
                 </Formik>
               </FormContainer> 
             </CenteredForm>
+          </div>
         </div>
-    </div>
+    </Container>
   )
 }
 
