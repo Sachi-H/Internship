@@ -78,10 +78,10 @@ const RegForm = () => {
             <div className="flex items-center flex-shrink-0 text-white mr-6">
               <img src='https://www.hacktiv.io/wp-content/uploads/2023/10/Logo2.png' alt='Brand Logo' className='w-48 h-15' />
             </div>
-            <div className="flex items-center text-[#414042] text-l font-bold">
+            <div className="flex items-center text-[#42bb71] text-l font-bold">
               <span>Already have an account?</span>          
-              <Link to="/" className="hover:text-[#42bb71] ml-3 underline hover:no-underline" 
-                style={{cursor: 'pointer'}}> Login
+              <Link to="/" className="hover:text-[#414042] ml-3 underline hover:no-underline" 
+                style={{cursor: 'pointer'}}> Sign Up
               </Link>
             </div>
           </nav>
@@ -157,7 +157,7 @@ const RegForm = () => {
                     <Form>
                       <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> Name </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> NAME </label>
                           <Field
                             type="text" id="grid-name" name="name" placeholder="Enter your name"
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -165,7 +165,7 @@ const RegForm = () => {
                           <ErrorMessage name="name" component="div" className="text-red-500" />
                         </div>
                         <div class="w-full md:w-1/2 px-3">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-number"> Mobile Number </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-number"> MOBILE NUMBER </label>
                           <Field
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             id="grid-number" type="tel" name='number' placeholder="Enter your mobile number"
@@ -176,7 +176,7 @@ const RegForm = () => {
 
                       <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email"> Email </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email"> EMAIL </label>
                           <Field
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                             id="grid-email" type="email" name='email' placeholder="Enter your email"
@@ -184,7 +184,7 @@ const RegForm = () => {
                           <ErrorMessage name="email" component="div" className="text-red-500" />
                         </div>
                         <div class="w-full md:w-1/2 px-3">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender"> Gender </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender"> GENDER </label>
                           <div class="relative">
                             <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                               id="grid-gender" name='gender' style={{cursor: 'pointer'}}>
@@ -202,7 +202,7 @@ const RegForm = () => {
 
                       <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full px-3">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address"> Address </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address"> ADDRESS </label>
                           <Field 
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                             id="grid-address" type="text" name="address" placeholder="Enter your address"
@@ -213,7 +213,7 @@ const RegForm = () => {
 
                       <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday"> Birthday </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday"> BIRTHDAY </label>
                           <Field 
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                             id="grid-birthday" type="text" name="birthday" placeholder="MM/DD/YYYY"
@@ -221,7 +221,7 @@ const RegForm = () => {
                           <ErrorMessage name="birthday" component="div" className="text-red-500" />
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password"> Password </label>
+                          <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password"> PASSWORD </label>
                           <Field
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             id="grid-password" type="password" name="password" placeholder="Enter your password"
