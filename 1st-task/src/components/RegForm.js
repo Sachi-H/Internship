@@ -1,9 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { saveFormData } from '../store/actions';
 
 const Container = styled.div`
   overflow: hidden;
@@ -18,7 +16,7 @@ const FormContainer = styled.form`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const RegForm = ({ saveFormData }) => {
+const RegForm = () => {
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -46,11 +44,6 @@ const RegForm = ({ saveFormData }) => {
                 address: '',
                 birthday: '',
                 password: '',
-              }}
-
-              onSubmit={(values, { setSubmitting }) => {
-                saveFormData(values); // Dispatch action to save form data to Redux store
-                setSubmitting(false);
               }}
 
               validate={(values) => {
@@ -201,4 +194,4 @@ const RegForm = ({ saveFormData }) => {
   )
 }
 
-export default connect(null, { saveFormData })(RegForm);
+export default RegForm
