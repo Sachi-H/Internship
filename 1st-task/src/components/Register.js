@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import styled from 'styled-components';
@@ -22,8 +22,6 @@ const FormContainer = styled.form`
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
-
-  const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -111,6 +109,8 @@ const Register = () => {
               
             {(formikProps) => (
               <Form>
+                {!successful && (
+                  <div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                   <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> NAME </label>
@@ -195,6 +195,8 @@ const Register = () => {
                     rounded-lg text-center'
                   > Register </button>
                 </div> 
+                </div>
+                )}
               </Form>
             )}
             </Formik>
