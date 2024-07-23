@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from "yup";
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { clearMessage } from "../slices/message";
+import { register } from "../slices/auth";
 
 const Container = styled.div`
   overflow: hidden;
@@ -17,6 +21,70 @@ const FormContainer = styled.form`
 `;
 
 const Register = () => {
+  const [successful, setSuccessful] = useState(false);
+
+  const { message } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
+  
+  const initialValues = {
+    name: '',
+    number: '',
+    email: '',
+    gender: '',
+    address: '',
+    birthday: '',
+    password: '',
+  };
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("This field is required."),
+    number: Yup.string()
+      .test("len", "Must be 11 digits.", (val) => val && val.length === 11)
+      .test("number", "Must be a number.", (val) => val && !isNaN(val))
+      .required("This field is required."),
+    email: Yup.string()
+      .email("Invalid email address.")
+      .required("This field is required."),
+    address: Yup.string().required("This field is required."),
+    birthday: Yup.string()
+      .test("date", "Invalid birthday format. Please use mm/dd/yyyy.", (val) =>
+        val && /^(0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(19|20)\d{2}$/.test(val)
+      )
+      .test("age", "You must be at least 18 years old to register.", (val) => {
+        const birthdayParts = val.split("/");
+        const birthdayYear = parseInt(birthdayParts[2], 10);
+        const birthdayMonth = parseInt(birthdayParts[0], 10);
+        const birthdayDay = parseInt(birthdayParts[1], 10);
+        const today = new Date();
+        let age = today.getFullYear() - birthdayYear;
+        if (birthdayMonth > today.getMonth() || (birthdayMonth === today.getMonth() && birthdayDay > today.getDate())) {
+          age--;
+        }
+        return age >= 18;
+      })
+      .required("This field is required."),
+    password: Yup.string().required("You must create your password."),
+  });
+
+  const handleRegister = (formValue) => {
+    const { username, email, password } = formValue;
+
+    setSuccessful(false);
+
+    dispatch(register({ username, email, password }))
+      .unwrap()
+      .then(() => {
+        setSuccessful(true);
+      })
+      .catch(() => {
+        setSuccessful(false);
+      });
+  };
+
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -36,68 +104,11 @@ const Register = () => {
           <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
           <FormContainer>
             <Formik
-              initialValues={{
-                name: '',
-                number: '',
-                email: '',
-                gender: '',
-                address: '',
-                birthday: '',
-                password: '',
-              }}
-
-              validate={(values) => {
-                const errors = {};
-                if (!values.name) {
-                  errors.name = 'This field is required.';
-                }
-                if (!values.number) {
-                  errors.number = 'This field is required.';
-                } else if (isNaN(values.number)) {
-                  errors.number = 'Must be a number.';
-                } else if (values.number.length !== 11) {
-                  errors.number = 'Must be 11 digits.';
-                } else {
-                  // no errors
-                }
-                if (!values.email) {
-                  errors.email = 'This field is required.';
-                } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-                  errors.email = 'Invalid email address.';
-                }
-                if (!values.address) {
-                  errors.address = 'This field is required.';
-                }
-                if (!values.birthday) {
-                  errors.birthday = 'This field is required.';
-                } else if (!/^(0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(19|20)\d{2}$/.test(values.birthday)) {
-                  errors.birthday = 'Invalid birthday format. Please use mm/dd/yyyy.';
-                } else {
-                  const birthdayParts = values.birthday.split('/');
-                  const birthdayYear = parseInt(birthdayParts[2], 10);
-                  const birthdayMonth = parseInt(birthdayParts[0], 10);
-                  const birthdayDay = parseInt(birthdayParts[1], 10);
-                  const today = new Date();
-                  let age = today.getFullYear() - birthdayYear;
-                  if (birthdayMonth > today.getMonth() || (birthdayMonth === today.getMonth() && birthdayDay > today.getDate())) {
-                    age--;
-                  }
-                  if (age < 18) {
-                    errors.birthday = 'You must be at least 18 years old to register.';
-                  }
-                }
-                if (!values.password) {
-                  errors.password = 'You must create your password.';
-                }
-                if (Object.keys(errors).length === 0) {
-                  if (!values.name || !values.number || !values.email || !values.address || !values.birthday || !values.password) {
-                    errors.allFields = 'All fields must be filled up!';
-                  }
-                }
-                return errors;
-              }}
-              validateOnChange={true}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleRegister}
             >
+              
             {(formikProps) => (
               <Form>
                 <div class="flex flex-wrap -mx-3 mb-6">
