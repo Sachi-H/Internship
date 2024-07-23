@@ -16,7 +16,7 @@ const FormContainer = styled.form`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const RegForm = () => {
+const Register = () => {
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -194,4 +194,4 @@ const RegForm = () => {
   )
 }
 
-export default RegForm
+export default Register

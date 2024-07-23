@@ -6,7 +6,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const Home = () => {
+const Profile = () => {
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -29,4 +29,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Profile
