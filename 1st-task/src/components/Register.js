@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { clearMessage } from "../slices/message";
-import { register } from "../slices/auth";
+import axios from 'axios';
 
 const Container = styled.div`
   overflow: hidden;
@@ -23,6 +23,7 @@ const FormContainer = styled.form`
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(clearMessage());
@@ -65,22 +66,22 @@ const Register = () => {
         return age >= 18;
       })
       .required("This field is required."),
-    password: Yup.string().required("You must create your password."),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters.")
+      .required("You must create your password."),
   });
 
-  const handleRegister = (formValue) => {
-    const { username, email, password } = formValue;
-
-    setSuccessful(false);
-
-    dispatch(register({ username, email, password }))
-      .unwrap()
-      .then(() => {
-        setSuccessful(true);
-      })
-      .catch(() => {
-        setSuccessful(false);
-      });
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await axios.post('/register', values);
+      setSuccessful(true);
+      console.log('Successful registration:', successful);
+      alert('Registration successful, redirecting to root page...');
+      navigate('');
+    } catch (error) { // <--- Add this catch block
+      console.error(error);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -93,7 +94,7 @@ const Register = () => {
           <div className="flex items-center text-[#42bb71] text-l font-bold">
             <span>Already have an account?</span>          
             <Link to="/" className="hover:text-[#414042] ml-3 underline hover:no-underline" 
-              style={{cursor: 'pointer'}}> Sign Up
+              style={{cursor: 'pointer'}}> Sign In
             </Link>
           </div>
         </nav>
@@ -104,97 +105,99 @@ const Register = () => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={handleRegister}
+              onSubmit={handleSubmit}
             >
               
             {(formikProps) => (
               <Form>
                 {!successful && (
                   <div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> NAME </label>
-                    <Field
-                      type="text" id="grid-name" name="name" placeholder="Enter your name"
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    />
-                    <ErrorMessage name="name" component="div" className="text-red-500" />
+                  <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> NAME </label>
+                      <Field
+                        type="text" id="grid-name" name="name" placeholder="Enter your name"
+                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      />
+                      <ErrorMessage name="name" component="div" className="text-red-500" />
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-number"> MOBILE NUMBER </label>
+                      <Field
+                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        id="grid-number" type="tel" name='number' placeholder="Enter your mobile number"
+                      />
+                      <ErrorMessage name="number" component="div" className="text-red-500" />
+                    </div>
                   </div>
-                  <div class="w-full md:w-1/2 px-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-number"> MOBILE NUMBER </label>
-                    <Field
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-number" type="tel" name='number' placeholder="Enter your mobile number"
-                    />
-                    <ErrorMessage name="number" component="div" className="text-red-500" />
-                  </div>
-                </div>
 
-                <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email"> EMAIL </label>
-                    <Field
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                      id="grid-email" type="email" name='email' placeholder="Enter your email"
-                    />
-                    <ErrorMessage name="email" component="div" className="text-red-500" />
-                  </div>
-                  <div class="w-full md:w-1/2 px-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender"> GENDER </label>
-                    <div class="relative">
-                      <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                        id="grid-gender" name='gender' style={{cursor: 'pointer'}}>
-                        <option>Male</option>
-                        <option>Female</option>
-                      </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
+                  <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email"> EMAIL </label>
+                      <Field
+                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                        id="grid-email" type="email" name='email' placeholder="Enter your email"
+                      />
+                      <ErrorMessage name="email" component="div" className="text-red-500" />
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender"> GENDER </label>
+                      <div class="relative">
+                        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                          id="grid-gender" name='gender' style={{cursor: 'pointer'}}>
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full px-3">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address"> ADDRESS </label>
-                    <Field 
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                      id="grid-address" type="text" name="address" placeholder="Enter your address"
-                    />
-                    <ErrorMessage name="address" component="div" className="text-red-500" />
+                  <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address"> ADDRESS </label>
+                      <Field 
+                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                        id="grid-address" type="text" name="address" placeholder="Enter your address"
+                      />
+                      <ErrorMessage name="address" component="div" className="text-red-500" />
+                    </div>
                   </div>
-                </div>
 
-                <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday"> BIRTHDAY </label>
-                    <Field 
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                      id="grid-birthday" type="text" name="birthday" placeholder="MM/DD/YYYY"
-                    />
-                    <ErrorMessage name="birthday" component="div" className="text-red-500" />
+                  <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday"> BIRTHDAY </label>
+                      <Field 
+                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                        id="grid-birthday" type="text" name="birthday" placeholder="MM/DD/YYYY"
+                      />
+                      <ErrorMessage name="birthday" component="div" className="text-red-500" />
+                    </div>
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password"> PASSWORD </label>
+                      <Field
+                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        id="grid-password" type="password" name="password" placeholder="Enter your password"
+                      />
+                      <ErrorMessage name="password" component="div" className="text-red-500" />
+                    </div>
                   </div>
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password"> PASSWORD </label>
-                    <Field
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-password" type="password" name="password" placeholder="Enter your password"
-                    />
-                    <ErrorMessage name="password" component="div" className="text-red-500" />
-                  </div>
-                </div>
 
-                <div className='flex justify-center'>
-                  <button type="submit" className='
-                    mt-3 px-6 py-3 font-medium 
-                    bg-[#42bb71] hover:bg-white 
-                    hover:shadow-[inset_0_0_0_2px_#42bb71]
-                    text-white hover:text-[#42bb71]
-                    rounded-lg text-center'
-                  > Register </button>
-                </div> 
+                  <form onSubmit={handleSubmit}>
+                    <div className='flex justify-center'>
+                      <button type="submit" className='
+                        mt-3 px-6 py-3 font-medium 
+                        bg-[#42bb71] hover:bg-white 
+                        hover:shadow-[inset_0_0_0_2px_#42bb71]
+                        text-white hover:text-[#42bb71]
+                        rounded-lg text-center'
+                      > Register </button>
+                    </div> 
+                  </form>
                 </div>
                 )}
               </Form>

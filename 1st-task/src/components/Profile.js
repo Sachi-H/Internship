@@ -22,7 +22,7 @@ const Profile = () => {
         </nav>
 
         <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
-          <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Information </h1>
+          <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Profile </h1>
         </div>
       </div>
     </Container>
