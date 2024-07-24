@@ -78,7 +78,7 @@ const Register = () => {
       console.log('Successful registration:', successful);
       alert('Registration successful, redirecting to root page...');
       navigate('');
-    } catch (error) { // <--- Add this catch block
+    } catch (error) { 
       console.error(error);
       setSubmitting(false);
     }
