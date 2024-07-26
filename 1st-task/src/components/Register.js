@@ -7,7 +7,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { validationSchema } from '../schema/schema';
 import { format, isValid } from 'date-fns';
 
-// Styling for the form container
 const FormContainer = styled.form`
   max-width: 550px;
   margin: 0 auto;
@@ -27,9 +26,7 @@ const DatePickerWrapper = styled(DatePicker)`
 const Register = () => {
   const navigate = useNavigate();
   
-  const onSubmit = async (values, actions) => {
-    console.log('Submitted values:', values);
-  
+  const onSubmit = async (values, actions) => {  
     const formattedBirthday = values.birthday
       ? format(new Date(values.birthday), 'MM/dd/yyyy')
       : '';
@@ -38,9 +35,7 @@ const Register = () => {
       ...values,
       birthday: formattedBirthday,
     };
-  
-    console.log('Formatted values:', formattedValues);
-  
+
     await new Promise((resolve) => setTimeout(resolve, 3000));
     actions.resetForm();
     alert('You are now registered! Kindly login your account.');
@@ -79,7 +74,6 @@ const Register = () => {
         <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
         <FormContainer onSubmit={handleSubmit}>
           <div>
-            {/* Inject custom CSS for datepicker */}
             <style>
               {`
                 .react-datepicker__year-dropdown {
