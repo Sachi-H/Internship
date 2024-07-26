@@ -1,9 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { validationSchema } from '../schema/schema';
 
 const FormContainer = styled.form`
@@ -15,18 +13,21 @@ const FormContainer = styled.form`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const onSubmit = async (values, actions) => {
-  console.log(values);
-  console.log(actions);
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  actions.resetForm();
-  alert('You are now registered!');
-
-  localStorage.setItem('user', JSON.stringify(values));
-};
-
 const Register = () => {
-  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
+  const navigate = useNavigate();
+  
+  const onSubmit = async (values, actions) => {
+    console.log(values);
+    console.log(actions);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    actions.resetForm();
+    alert('You are now registered! Kindly login your account.');
+  
+    localStorage.setItem('user', JSON.stringify(values));
+    navigate("/")
+  };
+  
+  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       fullname: '', number: '', email: '', gender: '', address: '', birthday: '', password: '',
     },
@@ -126,13 +127,11 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
-                <DatePicker
-                  selected={values.birthday ? new Date(values.birthday) : null}
-                  onChange={(date) => setFieldValue('birthday', date)}
-                  onBlur={handleBlur}
-                  id="birthday" placeholderText="MM/DD/YYYY"
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
+                <input 
+                  value={values.birthday} onChange={handleChange} onBlur={handleBlur}
+                  id="birthday" type="text" placeholder="MM/DD/YYYY"
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}            
                 />
                 {errors.birthday && touched.birthday && (
