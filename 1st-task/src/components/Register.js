@@ -146,11 +146,13 @@ const Register = () => {
                     </div>
                   </div>
                   
-                    <div className='flex justify-center'>
+                  <div className='flex justify-center'>
                       <button 
                         disabled={isSubmitting}
                         type="submit"
-                        className={`mt-3 px-6 py-3 font-medium ${isSubmitting? 'bg-gray-500' : 'bg-[#42bb71]'} hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] text-white hover:text-[#42bb71] rounded-lg text-center`}
+                        className={`mt-3 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
+                        ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
+                        text-white rounded-lg text-center`}
                       > {isSubmitting ? 'Submitting...' : 'Register'} </button>
                     </div>
                 </div>
