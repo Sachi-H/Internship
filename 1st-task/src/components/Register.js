@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from "yup";
+import { useFormik } from 'formik'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
-import { clearMessage } from "../slices/message";
-import axios from 'axios';
-
-const Container = styled.div`
-  overflow: hidden;
-`;
+import React from 'react'
+import { validationSchema } from '../schema/schema';
 
 const FormContainer = styled.form`
   max-width: 550px;
@@ -20,72 +13,24 @@ const FormContainer = styled.form`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
+const onSubmit = async (values, actions) => {
+  console.log(values);
+  console.log(actions);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  actions.resetForm();
+  alert('You are now registered!');
+};
+
 const Register = () => {
-  const [successful, setSuccessful] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(clearMessage());
-  }, [dispatch]);
-  
-  const initialValues = {
-    name: '',
-    number: '',
-    email: '',
-    gender: '',
-    address: '',
-    birthday: '',
-    password: '',
-  };
-
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("This field is required."),
-    number: Yup.string()
-      .test("len", "Must be 11 digits.", (val) => val && val.length === 11)
-      .test("number", "Must be a number.", (val) => val && !isNaN(val))
-      .required("This field is required."),
-    email: Yup.string()
-      .email("Invalid email address.")
-      .required("This field is required."),
-    address: Yup.string().required("This field is required."),
-    birthday: Yup.string()
-      .test("date", "Invalid birthday format. Please use mm/dd/yyyy.", (val) =>
-        val && /^(0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(19|20)\d{2}$/.test(val)
-      )
-      .test("age", "You must be at least 18 years old to register.", (val) => {
-        const birthdayParts = val.split("/");
-        const birthdayYear = parseInt(birthdayParts[2], 10);
-        const birthdayMonth = parseInt(birthdayParts[0], 10);
-        const birthdayDay = parseInt(birthdayParts[1], 10);
-        const today = new Date();
-        let age = today.getFullYear() - birthdayYear;
-        if (birthdayMonth > today.getMonth() || (birthdayMonth === today.getMonth() && birthdayDay > today.getDate())) {
-          age--;
-        }
-        return age >= 18;
-      })
-      .required("This field is required."),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters.")
-      .required("You must create your password."),
-  });
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      await axios.post('/register', values);
-      setSuccessful(true);
-      console.log('Successful registration:', successful);
-      alert('Registration successful, redirecting to root page...');
-      navigate('');
-    } catch (error) { 
-      console.error(error);
-      setSubmitting(false);
-    }
-  };
+    const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
+      initialValues: {
+        fullname: '', number: '', email: '', gender: '', address: '', birthday: '', password: '',
+      },
+        validationSchema: validationSchema,
+        onSubmit,
+    });
 
   return (
-    <Container>
       <div className='offset-lg-3 col-lg-6'>
         <nav className="flex items-center justify-between flex-wrap bg-white p-4">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -100,51 +45,53 @@ const Register = () => {
         </nav>
 
         <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
-          <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
-          <FormContainer>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
-              
-            {(formikProps) => (
-              <Form>
-                {!successful && (
-                  <div>
-                  <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name"> NAME </label>
-                      <Field
-                        type="text" id="grid-name" name="name" placeholder="Enter your name"
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
+            <FormContainer onSubmit={handleSubmit}>             
+                <div>
+                  <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="fullname"> FULL NAME </label>
+                      <input
+                        value={values.fullname} onChange={handleChange} onBlur={handleBlur}
+                        type="text" id="fullname" placeholder="Enter your name"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.fullname && touched.fullname ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="name" component="div" className="text-red-500" />
+                        {errors.fullname && touched.fullname && (
+                          <div className="text-red-500 text-s">{errors.fullname}</div>
+                        )}
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-number"> MOBILE NUMBER </label>
-                      <Field
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        id="grid-number" type="tel" name='number' placeholder="Enter your mobile number"
+                    <div className="w-full md:w-1/2 px-3">
+                      <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="number"> MOBILE NUMBER </label>
+                      <input
+                        value={values.number} onChange={handleChange} onBlur={handleBlur}
+                        id="number" type="tel" placeholder="Enter your mobile number"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.number && touched.number ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="number" component="div" className="text-red-500" />
+                      {errors.number && touched.number && (
+                        <div className="text-red-500 text-s">{errors.number}</div>
+                      )}
                     </div>
                   </div>
 
-                  <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email"> EMAIL </label>
-                      <Field
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                        id="grid-email" type="email" name='email' placeholder="Enter your email"
+                  <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email"> EMAIL </label>
+                      <input
+                        value={values.email} onChange={handleChange} onBlur={handleBlur}
+                        id="email" type="email" placeholder="Enter your email"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.email && touched.email ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="email" component="div" className="text-red-500" />
+                        {errors.email && touched.email && (
+                          <div className="text-red-500 text-s">{errors.email}</div>
+                        )}
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender"> GENDER </label>
+                    <div className="w-full md:w-1/2 px-3">
+                      <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender"> GENDER </label>
                       <div class="relative">
-                        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                          id="grid-gender" name='gender' style={{cursor: 'pointer'}}>
+                        <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                          value={values.gender} onChange={handleChange} onBlur={handleBlur}
+                          id="gender" style={{cursor: 'pointer'}}>
+                          <option value="" disabled selected className="block tracking-wide text-gray-700 text-xs font-bold mb-2">Select your gender</option>
                           <option>Male</option>
                           <option>Female</option>
                         </select>
@@ -154,59 +101,62 @@ const Register = () => {
                           </svg>
                         </div>
                       </div>
+                      {errors.gender && touched.gender && (
+                          <div className="text-red-500 text-s">{errors.gender}</div>
+                        )}
                     </div>
                   </div>
 
                   <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address"> ADDRESS </label>
-                      <Field 
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                        id="grid-address" type="text" name="address" placeholder="Enter your address"
+                      <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address"> ADDRESS </label>
+                      <input 
+                        value={values.address} onChange={handleChange} onBlur={handleBlur}
+                        id="address" type="text" placeholder="Enter your address"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="address" component="div" className="text-red-500" />
+                      {errors.address && touched.address && (
+                          <div className="text-red-500 text-s">{errors.address}</div>
+                        )}
                     </div>
                   </div>
 
                   <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday"> BIRTHDAY </label>
-                      <Field 
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                        id="grid-birthday" type="text" name="birthday" placeholder="MM/DD/YYYY"
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
+                      <input 
+                        value={values.birthday} onChange={handleChange} onBlur={handleBlur}
+                        id="birthday" type="text" placeholder="MM/DD/YYYY"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="birthday" component="div" className="text-red-500" />
+                      {errors.birthday && touched.birthday && (
+                          <div className="text-red-500 text-s">{errors.birthday}</div>
+                        )}
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password"> PASSWORD </label>
-                      <Field
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        id="grid-password" type="password" name="password" placeholder="Enter your password"
+                      <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password"> PASSWORD </label>
+                      <input
+                        value={values.password} onChange={handleChange} onBlur={handleBlur}
+                        id="password" type="password" placeholder="Enter your password"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.password && touched.password ? "border-red-500" : ""}`}            
                       />
-                      <ErrorMessage name="password" component="div" className="text-red-500" />
+                      {errors.password && touched.password && (
+                          <div className="text-red-500 text-s">{errors.password}</div>
+                        )}
                     </div>
                   </div>
-
-                  <form onSubmit={handleSubmit}>
+                  
                     <div className='flex justify-center'>
-                      <button type="submit" className='
-                        mt-3 px-6 py-3 font-medium 
-                        bg-[#42bb71] hover:bg-white 
-                        hover:shadow-[inset_0_0_0_2px_#42bb71]
-                        text-white hover:text-[#42bb71]
-                        rounded-lg text-center'
-                      > Register </button>
-                    </div> 
-                  </form>
+                      <button 
+                        disabled={isSubmitting}
+                        type="submit"
+                        className={`mt-3 px-6 py-3 font-medium ${isSubmitting? 'bg-gray-500' : 'bg-[#42bb71]'} hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] text-white hover:text-[#42bb71] rounded-lg text-center`}
+                      > {isSubmitting ? 'Submitting...' : 'Register'} </button>
+                    </div>
                 </div>
-                )}
-              </Form>
-            )}
-            </Formik>
-          </FormContainer> 
+          </FormContainer>
         </div>
       </div>
-    </Container>
   )
 }
 
