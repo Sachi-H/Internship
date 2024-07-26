@@ -19,6 +19,8 @@ const onSubmit = async (values, actions) => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   actions.resetForm();
   alert('You are now registered!');
+
+  localStorage.setItem('user', JSON.stringify(values));
 };
 
 const Register = () => {
@@ -146,7 +148,7 @@ const Register = () => {
                     </div>
                   </div>
                   
-                  <div className='flex justify-center'>
+                    <div className='flex justify-center'>
                       <button 
                         disabled={isSubmitting}
                         type="submit"
