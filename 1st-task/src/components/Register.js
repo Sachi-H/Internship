@@ -77,11 +77,11 @@ const Register = () => {
             <style>
               {`
                 .react-datepicker__year-dropdown {
-                  max-height: 150px;
+                  max-height: 300px;
                   overflow-y: auto;
                 }
                 .react-datepicker__month-dropdown {
-                  max-height: 100px;
+                  max-height: 250px;
                   overflow-y: auto;
                 }
               `}
@@ -167,6 +167,8 @@ const Register = () => {
                   onBlur={handleBlur}
                   showMonthDropdown
                   showYearDropdown
+                  minDate={new Date('1900-01-01')}
+                  maxDate={new Date('2014-12-31')}
                   dateFormat="MM/dd/yyyy"
                   id="birthday"
                   placeholderText="MM/DD/YYYY"
