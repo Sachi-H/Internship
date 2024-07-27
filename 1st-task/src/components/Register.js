@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -25,6 +25,8 @@ const DatePickerWrapper = styled(DatePicker)`
 `;
 
 const Register = () => {
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
     window.onpopstate = function () {
@@ -42,6 +44,7 @@ const Register = () => {
     const formattedValues = {
       ...values,
       birthday: formattedBirthday,
+      image: image ? URL.createObjectURL(image) : null, // Save the image URL or handle the file
     };
 
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -52,34 +55,27 @@ const Register = () => {
     // Replace the password with the encrypted password
     formattedValues.password = encryptedPassword;
 
-  const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-  const errors = {};
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const errors = {};
 
-  existingUsers.forEach((user) => {
-    if (user.fullname === formattedValues.fullname) {
-      errors.fullname = 'This fullname is already used!';
-    }
-    if (user.email === formattedValues.email) {
-      errors.email = 'This email is already used!';
-    }
-    if (user.number === formattedValues.number) {
-      errors.number = 'This mobile number is already used!';
-    }
-    const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
-    if (decryptedPassword === formattedValues.password) {
-      errors.password = 'This password is already used! ';
-    }
-  });
+    existingUsers.forEach(user => {
+      if (user.fullname === formattedValues.fullname) {
+        errors.fullname = 'This fullname is already used!';
+      }
+      if (user.email === formattedValues.email) {
+        errors.email = 'This email is already used!';
+      }
+      if (user.number === formattedValues.number) {
+        errors.number = 'This mobile number is already used!';
+      }
+    });
 
-  if (Object.keys(errors).length > 0) {
-    actions.setErrors(errors);
-  } else {
-      existingUsers.push({
-        ...formattedValues,
-        password: CryptoJS.AES.encrypt(formattedValues.password, 'internship').toString(),
-      });
+    if (Object.keys(errors).length > 0) {
+      actions.setErrors(errors);
+    } else {
+      existingUsers.push(formattedValues);
       localStorage.setItem('users', JSON.stringify(existingUsers));
-      await new Promise((resolve) => setTimeout(resolve, 2500));
+      await new Promise(resolve => setTimeout(resolve, 2500));
       actions.resetForm();
       alert('You are now registered! Kindly login your account.');
       navigate("/");
@@ -99,6 +95,13 @@ const Register = () => {
     validationSchema: validationSchema,
     onSubmit,
   });
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
 
   return (
     <div className='offset-lg-3 col-lg-6'>
@@ -200,7 +203,6 @@ const Register = () => {
                   selected={values.birthday ? new Date(values.birthday) : null}
                   onChange={(date) => {
                     if (date && isValid(date)) {
-                      console.log('Selected date:', date);
                       setFieldValue('birthday', format(date, 'MM/dd/yyyy'));
                     } else {
                       setFieldValue('birthday', '');
@@ -238,6 +240,28 @@ const Register = () => {
                 </div>
                 {errors.gender && touched.gender && (
                   <div className="text-red-500 text-s">{errors.gender}</div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full px-3">
+                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="image"> PROFILE IMAGE </label>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                />
+                {image && (
+                  <div className="mt-2">
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover"
+                    />
+                  </div>
                 )}
               </div>
             </div>

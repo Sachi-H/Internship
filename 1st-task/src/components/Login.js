@@ -24,31 +24,35 @@ const Login = () => {
   }, []);
   
   const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (values, actions) => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-  let foundUser = null;
-  storedUsers.forEach((user, index) => {
-    if ((user.email === values.loginCredential || user.number === values.loginCredential)) {
-      const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
-      if (decryptedPassword === values.password) {
-        foundUser = user;
-        localStorage.setItem('currentUser', index); 
+    let foundUser = null;
+    storedUsers.forEach((user, index) => {
+      if ((user.email === values.loginCredential || user.number === values.loginCredential)) {
+        try {
+          const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
+          console.log('Decrypted Password:', decryptedPassword); // Debugging: Check decrypted password
+          if (decryptedPassword === values.password) {
+            foundUser = user;
+            localStorage.setItem('currentUser', index);
+          }
+        } catch (error) {
+          console.error('Decryption error:', error); // Debugging: Log any decryption errors
+        }
       }
+    });
+
+    if (foundUser) {
+      await new Promise((resolve) => setTimeout(resolve, 2500));
+      navigate('/profile', { replace: true });
+    } else {
+      alert('Invalid login credential or password.');
     }
-  });
 
-  if (foundUser) {
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    navigate('/profile', { replace: true });      
-  } else {
-    alert('Invalid login credential or password.');
-  }
-
-  actions.setSubmitting(false);
+    actions.setSubmitting(false);
   };
 
   return (

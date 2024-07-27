@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import * as CryptoJS from 'crypto-js';
@@ -42,62 +42,78 @@ const Profile = () => {
         <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
           <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Profile </h1>
 
-          <div class="bg-white overflow-hidden shadow rounded-lg border max-w-md mx-auto">
+          <div className="bg-white overflow-hidden shadow rounded-lg border max-w-md mx-auto">
             <div className="border-t border-gray-200 px-4 py-5 sm:p-0 text-white font-bold">
               <dl className='sm:divide-y sm:divide-gray-200'>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Profile Image
+                  </dt>
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                    {currentUser.image ? (
+                      <img
+                        src={currentUser.image}
+                        alt="Profile"
+                        className="w-32 h-32 object-cover rounded-full"
+                      />
+                    ) : (
+                      <div>No image uploaded</div>
+                    )}
+                  </dd>
+                </div>
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Full name
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.fullname}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Email address
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.email}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Mobile Number
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.number}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Birthday
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.birthday}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Gender
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.gender}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Address
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {currentUser.address}
                   </dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
                     Password
                   </dt>
-                  <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
+                  <dd className="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
                     {decryptedPassword}
                   </dd>
                 </div>
@@ -107,7 +123,7 @@ const Profile = () => {
         </div>
       </div>
     </Container>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
