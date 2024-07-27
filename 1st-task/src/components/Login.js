@@ -21,9 +21,10 @@ const Login = () => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
     let foundUser = null;
-    storedUsers.forEach((user) => {
+    storedUsers.forEach((user, index) => {
       if ((user.email === values.loginCredential || user.number === values.loginCredential) && user.password === values.password) {
         foundUser = user;
+        localStorage.setItem('currentUser', index); 
       }
     });
 

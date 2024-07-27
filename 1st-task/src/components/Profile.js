@@ -7,6 +7,15 @@ const Container = styled.div`
 `;
 
 const Profile = () => {
+  const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+  const currentUserIndex = localStorage.getItem('currentUser');
+
+  if (currentUserIndex === null) {
+    return <div>User not logged in.</div>;
+  }
+
+  const currentUser = storedUsers[currentUserIndex];
+
   return (
     <Container>
       <div className='offset-lg-3 col-lg-6'>
@@ -23,6 +32,16 @@ const Profile = () => {
 
         <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
           <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Profile </h1>
+
+          <div className="p-5 text-white font-bold">
+            <p>Name: {currentUser.fullname}</p>
+            <p>Email: {currentUser.email}</p>
+            <p>Phone Number: {currentUser.number}</p>
+            <p>Birthday: {currentUser.birthday}</p>
+            <p>Gender: {currentUser.gender}</p>
+            <p>Address: {currentUser.address}</p>
+            <p>Password: {currentUser.password}</p>
+          </div>
         </div>
       </div>
     </Container>
