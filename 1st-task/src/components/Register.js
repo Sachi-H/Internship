@@ -35,20 +35,28 @@ const Register = () => {
       ...values,
       birthday: formattedBirthday,
     };
-    
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const userExists = existingUsers.find((user) => {
-      return (
-        user.fullname === formattedValues.fullname ||
-        user.email === formattedValues.email ||
-        user.number === formattedValues.number ||
-        user.password === formattedValues.password
-      );
-    });
 
-    if (userExists) {
-      alert('User already exists!');
-    } else {
+  const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+  const errors = {};
+
+  existingUsers.forEach((user) => {
+    if (user.fullname === formattedValues.fullname) {
+      errors.fullname = 'This fullname already exist!';
+    }
+    if (user.email === formattedValues.email) {
+      errors.email = 'This email already exist!';
+    }
+    if (user.number === formattedValues.number) {
+      errors.number = 'This mobile number already exist!';
+    }
+    if (user.password === formattedValues.password) {
+      errors.password = 'This password already exist!';
+    }
+  });
+
+  if (Object.keys(errors).length > 0) {
+    actions.setErrors(errors);
+  } else {
       existingUsers.push(formattedValues);
       localStorage.setItem('users', JSON.stringify(existingUsers));
       await new Promise((resolve) => setTimeout(resolve, 3000));
