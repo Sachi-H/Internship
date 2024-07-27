@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { validationSchema } from '../schema/schema';
 import { format, isValid } from 'date-fns';
+import * as CryptoJS from 'crypto-js';
 
 const FormContainer = styled.form`
   max-width: 550px;
@@ -42,6 +43,14 @@ const Register = () => {
       ...values,
       birthday: formattedBirthday,
     };
+
+    const encryptedPassword = CryptoJS.AES.encrypt(
+      formattedValues.password,
+      'internship' // Replace with your secret key
+    ).toString();
+  
+    // Replace the password with the encrypted password
+    formattedValues.password = encryptedPassword;
 
   const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
   const errors = {};
