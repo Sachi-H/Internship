@@ -44,7 +44,7 @@ const Register = () => {
     const formattedValues = {
       ...values,
       birthday: formattedBirthday,
-      image: image ? URL.createObjectURL(image) : null, // Save the image URL or handle the file
+      image: image ? image : null, // Save the Base64 string of the image
     };
 
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -75,6 +75,7 @@ const Register = () => {
     } else {
       existingUsers.push(formattedValues);
       localStorage.setItem('users', JSON.stringify(existingUsers));
+      localStorage.setItem('currentUser', existingUsers.length - 1); // Save the index of the current user
       await new Promise(resolve => setTimeout(resolve, 2500));
       actions.resetForm();
       alert('You are now registered! Kindly login your account.');
@@ -99,7 +100,11 @@ const Register = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result); // Save the Base64 string of the image
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -257,7 +262,7 @@ const Register = () => {
                 {image && (
                   <div className="mt-2">
                     <img
-                      src={URL.createObjectURL(image)}
+                      src={image} // Directly use the Base64 string
                       alt="Preview"
                       className="w-32 h-32 object-cover"
                     />
