@@ -35,13 +35,27 @@ const Register = () => {
       ...values,
       birthday: formattedBirthday,
     };
+    
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const userExists = existingUsers.find((user) => {
+      return (
+        user.fullname === formattedValues.fullname ||
+        user.email === formattedValues.email ||
+        user.number === formattedValues.number ||
+        user.password === formattedValues.password
+      );
+    });
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    actions.resetForm();
-    alert('You are now registered! Kindly login your account.');
-  
-    localStorage.setItem('user', JSON.stringify(formattedValues));
-    navigate("/");
+    if (userExists) {
+      alert('User already exists!');
+    } else {
+      existingUsers.push(formattedValues);
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      actions.resetForm();
+      alert('You are now registered! Kindly login your account.');
+      navigate("/");
+    }
   };
 
   const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
