@@ -38,7 +38,7 @@ const Login = () => {
     });
 
     if (foundUser) {
-      alert('Login successful!');
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       navigate('/profile', { replace: true });
     } else {
       alert('Invalid login credential or password.');
@@ -156,16 +156,14 @@ const Login = () => {
                     </div>
 
                     <div className="mt-6 justify-center">
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`w-full mt-3 px-6 py-3 tracking-wide font-medium 
-                          ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71] hover:bg-white'} 
-                          ${isSubmitting ? '' : 'hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
-                          text-white rounded-lg text-center`}
-                      >
-                        {isSubmitting ? 'Signing in...' : 'Sign in'}
-                      </button>
+                    <button 
+                      disabled={isSubmitting}
+                      type="submit"
+                      className={`w-full mt-3 px-6 py-3 tracking-wide font-medium 
+                        ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
+                        ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
+                      text-white rounded-lg text-center`}
+                    > {isSubmitting ? 'Signing In...' : 'Sign In'} </button>
                     </div>
                   </Form>
                 )}
