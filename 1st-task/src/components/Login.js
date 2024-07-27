@@ -19,7 +19,8 @@ const Login = () => {
 
       if (values.email === email && values.password === password) {
         alert('Login successful!');
-        navigate('/profile');
+        // Replace the current history entry with the profile page
+        navigate('/profile', { replace: true });
       } else {
         alert('Invalid email or password.');
       }
