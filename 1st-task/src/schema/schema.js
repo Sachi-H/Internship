@@ -31,6 +31,6 @@ export const validationSchema = Yup.object().shape({
       })
       .required("This field is required."),
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters.")
+      .min(8, "Password must be at least 8 characters.")
       .required("You must create your password."),
   });
