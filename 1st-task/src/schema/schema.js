@@ -4,7 +4,8 @@ export const validationSchema = Yup.object().shape({
     fullname: Yup.string().required("This field is required."),
     number: Yup.string()
       .test("len", "Must be 11 digits.", (val) => val && val.length === 11)
-      .test("number", "Must be a number.", (val) => val && !isNaN(val))
+      .test("number", "Must be a number.", (val) => val && !isNaN(val))      
+      .test("mobile", "Invalid mobile number.", (val) => val && val.startsWith("09"))
       .required("This field is required."),
     email: Yup.string()
       .email("Invalid email address.")

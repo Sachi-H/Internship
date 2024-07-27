@@ -12,22 +12,22 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (values, actions) => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-
-    if (storedUser) {
-      const { email, password } = storedUser;
-
-      if (values.email === email && values.password === password) {
-        alert('Login successful!');
-        // Replace the current history entry with the profile page
-        navigate('/profile', { replace: true });
-      } else {
-        alert('Invalid email or password.');
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+  
+    let foundUser = null;
+    storedUsers.forEach((user) => {
+      if (user.email === values.email && user.password === values.password) {
+        foundUser = user;
       }
+    });
+  
+    if (foundUser) {
+      alert('Login successful!');
+      navigate('/profile', { replace: true });
     } else {
-      alert('No registered user found.');
+      alert('Invalid email or password.');
     }
-
+  
     actions.setSubmitting(false);
   };
 
