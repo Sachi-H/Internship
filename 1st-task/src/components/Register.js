@@ -48,16 +48,16 @@ const Register = () => {
 
   existingUsers.forEach((user) => {
     if (user.fullname === formattedValues.fullname) {
-      errors.fullname = 'This fullname already exist!';
+      errors.fullname = 'This fullname is already used!';
     }
     if (user.email === formattedValues.email) {
-      errors.email = 'This email already exist!';
+      errors.email = 'This email is already used!';
     }
     if (user.number === formattedValues.number) {
-      errors.number = 'This mobile number already exist!';
+      errors.number = 'This mobile number is already used!';
     }
     if (user.password === formattedValues.password) {
-      errors.password = 'This password already exist!';
+      errors.password = 'This password is already used!';
     }
   });
 
