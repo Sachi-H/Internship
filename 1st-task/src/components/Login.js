@@ -1,9 +1,34 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
-import { validationSchema } from '../schema/schema';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+  email: Yup.string().email('Invalid email address').required('Required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Required')
+});
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (values, actions) => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    if (storedUser) {
+      const { email, password } = storedUser;
+
+      if (values.email === email && values.password === password) {
+        alert('Login successful!');
+        navigate('/profile');
+      } else {
+        alert('Invalid email or password.');
+      }
+    } else {
+      alert('No registered user found.');
+    }
+
+    actions.setSubmitting(false);
+  };
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -57,13 +82,9 @@ const Login = () => {
               <Formik
                 initialValues={{ email: '', password: '' }}
                 validationSchema={validationSchema}
-                onSubmit={async (values) => {
-                  await new Promise((r) => setTimeout(r,500));
-                  alert(JSON.stringify(values, null, 2));
-
-                }}
+                onSubmit={handleSubmit}
               >
-                {({ errors, touched }) => (
+                {({ errors, touched, isSubmitting }) => (
                   <Form>
                     <div>
                       <label htmlFor="email" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
@@ -76,9 +97,9 @@ const Login = () => {
                         placeholder="example@example.com"
                         className={`block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${errors.email && touched.email ? 'border-red-500' : 'border-gray-200'} rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                       />
-                      {errors.email && touched.email ? (
+                      {errors.email && touched.email && (
                         <div className="text-red-500 text-sm mt-1">{errors.email}</div>
-                      ) : null}
+                      )}
                     </div>
 
                     <div className="mt-6">
@@ -94,21 +115,21 @@ const Login = () => {
                         placeholder="Your Password"
                         className={`block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${errors.password && touched.password ? 'border-red-500' : 'border-gray-200'} rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                       />
-                      {errors.password && touched.password ? (
+                      {errors.password && touched.password && (
                         <div className="text-red-500 text-sm mt-1">{errors.password}</div>
-                      ) : null}
+                      )}
                     </div>
 
                     <div className="mt-6 justify-center">
                       <button
                         type="submit"
-                        className="w-full mt-3 px-6 py-3 tracking-wide font-medium 
-                          bg-[#42bb71] hover:bg-white 
-                          hover:shadow-[inset_0_0_0_2px_#42bb71]
-                          text-white hover:text-[#42bb71]
-                          rounded-lg text-center"
+                        disabled={isSubmitting}
+                        className={`w-full mt-3 px-6 py-3 tracking-wide font-medium 
+                          ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71] hover:bg-white'} 
+                          ${isSubmitting ? '' : 'hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
+                          text-white rounded-lg text-center`}
                       >
-                        Sign in
+                        {isSubmitting ? 'Signing in...' : 'Sign in'}
                       </button>
                     </div>
                   </Form>
