@@ -65,17 +65,21 @@ const Register = () => {
     if (user.number === formattedValues.number) {
       errors.number = 'This mobile number is already used!';
     }
-    if (user.password === formattedValues.password) {
-      errors.password = 'This password is already used!';
+    const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
+    if (decryptedPassword === formattedValues.password) {
+      errors.password = 'This password is already used! ';
     }
   });
 
   if (Object.keys(errors).length > 0) {
     actions.setErrors(errors);
   } else {
-      existingUsers.push(formattedValues);
+      existingUsers.push({
+        ...formattedValues,
+        password: CryptoJS.AES.encrypt(formattedValues.password, 'internship').toString(),
+      });
       localStorage.setItem('users', JSON.stringify(existingUsers));
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
       actions.resetForm();
       alert('You are now registered! Kindly login your account.');
       navigate("/");

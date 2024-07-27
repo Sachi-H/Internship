@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import * as CryptoJS from 'crypto-js';
 
 const Container = styled.div`
   overflow: hidden;
@@ -22,6 +23,7 @@ const Profile = () => {
   }
 
   const currentUser = storedUsers[currentUserIndex];
+  const decryptedPassword = CryptoJS.AES.decrypt(currentUser.password, 'internship').toString(CryptoJS.enc.Utf8);
 
   return (
     <Container>
@@ -96,7 +98,7 @@ const Profile = () => {
                     Password
                   </dt>
                   <dd class="mt-1 text-sm text-[#414042] sm:mt-0 sm:col-span-2">
-                    {currentUser.password}
+                    {decryptedPassword}
                   </dd>
                 </div>
               </dl>

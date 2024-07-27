@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import * as CryptoJS from 'crypto-js';
 
 const validationSchema = Yup.object({
   loginCredential: Yup.string()
@@ -29,22 +30,25 @@ const Login = () => {
   const handleSubmit = async (values, actions) => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    let foundUser = null;
-    storedUsers.forEach((user, index) => {
-      if ((user.email === values.loginCredential || user.number === values.loginCredential) && user.password === values.password) {
+  let foundUser = null;
+  storedUsers.forEach((user, index) => {
+    if ((user.email === values.loginCredential || user.number === values.loginCredential)) {
+      const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
+      if (decryptedPassword === values.password) {
         foundUser = user;
         localStorage.setItem('currentUser', index); 
       }
-    });
-
-    if (foundUser) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      navigate('/profile', { replace: true });
-    } else {
-      alert('Invalid login credential or password.');
     }
+  });
 
-    actions.setSubmitting(false);
+  if (foundUser) {
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    navigate('/profile', { replace: true });      
+  } else {
+    alert('Invalid login credential or password.');
+  }
+
+  actions.setSubmitting(false);
   };
 
   return (
@@ -156,14 +160,16 @@ const Login = () => {
                     </div>
 
                     <div className="mt-6 justify-center">
-                    <button 
-                      disabled={isSubmitting}
-                      type="submit"
-                      className={`w-full mt-3 px-6 py-3 tracking-wide font-medium 
-                        ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
-                        ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
-                      text-white rounded-lg text-center`}
-                    > {isSubmitting ? 'Signing In...' : 'Sign In'} </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`w-full mt-3 px-6 py-3 tracking-wide font-medium 
+                          ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71] hover:bg-white'} 
+                          ${isSubmitting ? '' : 'hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
+                          text-white rounded-lg text-center`}
+                      >
+                        {isSubmitting ? 'Signing in...' : 'Sign in'}
+                      </button>
                     </div>
                   </Form>
                 )}
