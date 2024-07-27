@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -24,6 +24,13 @@ const DatePickerWrapper = styled(DatePicker)`
 `;
 
 const Register = () => {
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
+  }, []);
+  
   const navigate = useNavigate();
   
   const onSubmit = async (values, actions) => {  

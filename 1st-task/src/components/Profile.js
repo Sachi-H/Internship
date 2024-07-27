@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,6 +7,13 @@ const Container = styled.div`
 `;
 
 const Profile = () => {
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
+  }, []);
+  
   const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
   const currentUserIndex = localStorage.getItem('currentUser');
 

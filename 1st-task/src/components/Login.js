@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +15,13 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
+  }, []);
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (values, actions) => {
