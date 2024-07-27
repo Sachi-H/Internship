@@ -4,7 +4,13 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
-  email: Yup.string().email('Invalid email address').required('Required'),
+  loginCredential: Yup.string()
+    .test('email-or-phone', 'Invalid email or phone number', (value) => {
+      const userEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const userNumber = /^\d{11}$/; 
+      return userEmail.test(value) || userNumber.test(value);
+    })
+    .required('Required'),
   password: Yup.string().min(8, 'Password must be at least 8 characters').required('Required')
 });
 
@@ -13,21 +19,21 @@ const Login = () => {
 
   const handleSubmit = async (values, actions) => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-  
+
     let foundUser = null;
     storedUsers.forEach((user) => {
-      if (user.email === values.email && user.password === values.password) {
+      if ((user.email === values.loginCredential || user.number === values.loginCredential) && user.password === values.password) {
         foundUser = user;
       }
     });
-  
+
     if (foundUser) {
       alert('Login successful!');
       navigate('/profile', { replace: true });
     } else {
-      alert('Invalid email or password.');
+      alert('Invalid login credential or password.');
     }
-  
+
     actions.setSubmitting(false);
   };
 
@@ -81,25 +87,25 @@ const Login = () => {
 
             <div className="mt-8">
               <Formik
-                initialValues={{ email: '', password: '' }}
+                initialValues={{ loginCredential: '', password: '' }}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
                 {({ errors, touched, isSubmitting }) => (
                   <Form>
                     <div>
-                      <label htmlFor="email" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
-                        Email Address
+                      <label htmlFor="loginCredential" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                        Email Address or Mobile Number
                       </label>
                       <Field
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="example@example.com"
-                        className={`block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${errors.email && touched.email ? 'border-red-500' : 'border-gray-200'} rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
+                        type="text"
+                        name="loginCredential"
+                        id="loginCredential"
+                        placeholder="example@example.com or 09123456789"
+                        className={`block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border ${errors.loginCredential && touched.loginCredential ? 'border-red-500' : 'border-gray-200'} rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40`}
                       />
-                      {errors.email && touched.email && (
-                        <div className="text-red-500 text-sm mt-1">{errors.email}</div>
+                      {errors.loginCredential && touched.loginCredential && (
+                        <div className="text-red-500 text-sm mt-1">{errors.loginCredential}</div>
                       )}
                     </div>
 
