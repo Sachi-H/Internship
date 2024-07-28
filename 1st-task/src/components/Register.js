@@ -272,7 +272,7 @@ const Register = () => {
                     <button
                       type="button"
                       onClick={handleCancel} 
-                      className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded ml-4"
+                      className="bg-gray-400 hover:bg-gray-500 text-white font-medium py-3 px-6 rounded ml-4"
                     >
                       Cancel
                     </button>
