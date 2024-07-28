@@ -26,7 +26,7 @@ const DatePickerWrapper = styled(DatePicker)`
 
 const Register = () => {
   const [image, setImage] = useState(null);
-  const [fileInputKey, setFileInputKey] = useState(0); 
+  const [fileInputKey, setFileInputKey] = useState(0);
 
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
@@ -34,25 +34,25 @@ const Register = () => {
       window.history.go(1);
     };
   }, []);
-  
+
   const navigate = useNavigate();
-  
-  const onSubmit = async (values, actions) => {  
+
+  const onSubmit = async (values, actions) => {
     const formattedBirthday = values.birthday
       ? format(new Date(values.birthday), 'MM/dd/yyyy')
       : '';
-  
+
     const formattedValues = {
       ...values,
       birthday: formattedBirthday,
-      image: image ? image : null, 
+      image: image ? image : null,
     };
 
     const encryptedPassword = CryptoJS.AES.encrypt(
       formattedValues.password,
-      'internship' 
+      'internship'
     ).toString();
-  
+
     formattedValues.password = encryptedPassword;
 
     const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
@@ -75,7 +75,7 @@ const Register = () => {
     } else {
       existingUsers.push(formattedValues);
       localStorage.setItem('users', JSON.stringify(existingUsers));
-      localStorage.setItem('currentUser', existingUsers.length - 1); 
+      localStorage.setItem('currentUser', existingUsers.length - 1);
       await new Promise(resolve => setTimeout(resolve, 2500));
       actions.resetForm();
       alert('You are now registered! Kindly login your account.');
@@ -106,12 +106,12 @@ const Register = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      setImage(null); 
+      setImage(null);
     }
   };
 
   const handleCancel = () => {
-    setImage(null); 
+    setImage(null);
     setFileInputKey(fileInputKey + 1);
   };
 
@@ -129,8 +129,8 @@ const Register = () => {
 
       <div className='bg-[#42bb71] min-h-[calc(100vh-90px)] pb-10'>
         <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
-     
-        <FormContainer onSubmit={handleSubmit}> 
+
+        <FormContainer onSubmit={handleSubmit}>
           <div>
             <style>
               {`
@@ -141,6 +141,9 @@ const Register = () => {
                 .react-datepicker__month-dropdown {
                   max-height: 250px;
                   overflow-y: auto;
+                }
+                .react-datepicker__triangle {
+                  display: none;
                 }
               `}
             </style>
@@ -184,56 +187,60 @@ const Register = () => {
             <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
-                
-                  <DatePickerWrapper
-                    selected={values.birthday ? new Date(values.birthday) : null}
-                    onChange={(date) => {
-                      if (date && isValid(date)) {
-                        setFieldValue('birthday', format(date, 'MM/dd/yyyy'));
-                      } else {
-                        setFieldValue('birthday', '');
-                      }
-                    }}
-                    onBlur={handleBlur}
-                    showMonthDropdown
-                    showYearDropdown
-                    minDate={new Date('1900-01-01')}
-                    maxDate={new Date('2014-12-31')}
-                    dateFormat="MM/dd/yyyy"
-                    id="birthday"
-                    placeholderText="MM/DD/YYYY"
-                    className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-[8rem] rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}
-                  />
-                
+
+                <DatePickerWrapper
+                  selected={values.birthday ? new Date(values.birthday) : null}
+                  onChange={(date) => {
+                    if (date && isValid(date)) {
+                      setFieldValue('birthday', format(date, 'MM/dd/yyyy'));
+                    } else {
+                      setFieldValue('birthday', '');
+                    }
+                  }}
+                  onBlur={handleBlur}
+                  showMonthDropdown
+                  showYearDropdown
+                  yearDropdownItemNumber={50}
+                  scrollableYearDropdown
+                  minDate={new Date('1900-01-01')}
+                  maxDate={new Date('2014-12-31')}
+                  dateFormat="MM/dd/yyyy"
+                  id="birthday"
+                  placeholderText="MM/DD/YYYY"
+                  className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-[8rem] rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}
+                />
+
                 {errors.birthday && touched.birthday && (
                   <div className="text-red-500 text-s">{errors.birthday}</div>
                 )}
               </div>
+
               <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender"> GENDER </label>
                 <div className="relative">
-                  <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  <select
                     value={values.gender} onChange={handleChange} onBlur={handleBlur}
-                    id="gender" style={{ cursor: 'pointer' }}>
-                    <option value="" disabled>Select your gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
+                    id="gender"
+                    className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.gender && touched.gender ? "border-red-500" : ""}`}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
                   </div>
                 </div>
                 {errors.gender && touched.gender && (
                   <div className="text-red-500 text-s">{errors.gender}</div>
                 )}
               </div>
+
               <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password"> PASSWORD </label>
                 <input
                   value={values.password} onChange={handleChange} onBlur={handleBlur}
-                  id="password" type="password" placeholder="Create your password"
+                  id="password" type="password" placeholder="Enter your password"
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.password && touched.password ? "border-red-500" : ""}`}
                 />
                 {errors.password && touched.password && (
@@ -243,13 +250,13 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3">
+              <div className="w-full px-3 mb-6 md:mb-0">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address"> ADDRESS </label>
-                <input
+                <textarea
                   value={values.address} onChange={handleChange} onBlur={handleBlur}
-                  id="address" type="text" placeholder="Enter your address"
-                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
-                />
+                  id="address" rows="3" placeholder="Enter your address"
+                  className={`block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
+                ></textarea>
                 {errors.address && touched.address && (
                   <div className="text-red-500 text-s">{errors.address}</div>
                 )}
@@ -257,51 +264,42 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3">
-                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="image"> PROFILE IMAGE </label>
-                <div className='flex'>
-                  <input
-                    key={fileInputKey}
-                    type="file"
-                    id="image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  />
-                  {image && (
+              <div className="w-full px-3 mb-6 md:mb-0">
+                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">PROFILE PICTURE</label>
+                <input
+                  key={fileInputKey}
+                  onChange={handleImageChange}
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  type="file"
+                />
+                {image && (
+                  <div className="mt-4 relative">
+                    <img src={image} alt="Profile" className="w-40 h-40 rounded-full object-cover" />
                     <button
                       type="button"
-                      onClick={handleCancel} 
-                      className="bg-gray-400 hover:bg-gray-500 text-white font-medium py-3 px-6 rounded ml-4"
+                      onClick={handleCancel}
+                      className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full p-1"
                     >
-                      Cancel
+                      <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 8.586l2.828-2.829a1 1 0 111.415 1.415L11.414 10l2.829 2.828a1 1 0 01-1.415 1.415L10 11.414l-2.828 2.829a1 1 0 11-1.415-1.415L8.586 10 5.757 7.172a1 1 0 111.415-1.415L10 8.586z"/></svg>
                     </button>
-                  )}
-                </div>
-                {image && (
-                  <div className="mt-2">
-                    <img
-                      src={image}
-                      alt="Preview"
-                      className="w-32 h-32 object-cover"
-                    />
                   </div>
                 )}
               </div>
             </div>
 
-            <div className='flex justify-center'>
-              <button 
-                disabled={isSubmitting}
-                type="submit"
-                className={`mt-2 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
-                ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
-                text-white rounded-lg text-center`}
-              > {isSubmitting ? 'Submitting...' : 'Register'} </button>
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full px-3 mb-6 md:mb-0">
+                <button
+                  type="submit"
+                  className="appearance-none block w-full bg-[#42bb71] hover:bg-[#69c98c] text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-[#69c98c] focus:border-gray-500"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Registering...' : 'REGISTER'}
+                </button>
+              </div>
             </div>
           </div>
         </FormContainer>
-
       </div>
     </div>
   );
