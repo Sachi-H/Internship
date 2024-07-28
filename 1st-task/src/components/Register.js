@@ -9,7 +9,7 @@ import { format, isValid } from 'date-fns';
 import * as CryptoJS from 'crypto-js';
 
 const FormContainer = styled.form`
-  max-width: 550px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 30px;
   background-color: #f9f9f9;
@@ -18,7 +18,7 @@ const FormContainer = styled.form`
 `;
 
 const DatePickerWrapper = styled(DatePicker)`
-  @apply block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight;
+  @apply block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-[8rem] rounded leading-tight;
   &:focus {
     @apply outline-none bg-white border-gray-500;
   }
@@ -119,9 +119,10 @@ const Register = () => {
         </div>
       </nav>
 
-      <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
+      <div className='bg-[#42bb71] min-h-[calc(100vh-90px)] pb-10'>
         <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Registration </h1>
-        <FormContainer onSubmit={handleSubmit}>
+     
+        <FormContainer onSubmit={handleSubmit}> 
           <div>
             <style>
               {`
@@ -136,8 +137,8 @@ const Register = () => {
               `}
             </style>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="fullname"> FULL NAME </label>
                 <input
                   value={values.fullname} onChange={handleChange} onBlur={handleBlur}
@@ -148,7 +149,7 @@ const Register = () => {
                   <div className="text-red-500 text-s">{errors.fullname}</div>
                 )}
               </div>
-              <div className="w-full md:w-1/2 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="number"> MOBILE NUMBER </label>
                 <input
                   value={values.number} onChange={handleChange} onBlur={handleBlur}
@@ -159,10 +160,7 @@ const Register = () => {
                   <div className="text-red-500 text-s">{errors.number}</div>
                 )}
               </div>
-            </div>
-
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email"> EMAIL </label>
                 <input
                   value={values.email} onChange={handleChange} onBlur={handleBlur}
@@ -173,63 +171,40 @@ const Register = () => {
                   <div className="text-red-500 text-s">{errors.email}</div>
                 )}
               </div>
-              <div className="w-full md:w-1/2 px-3">
-                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password"> PASSWORD </label>
-                <input
-                  value={values.password} onChange={handleChange} onBlur={handleBlur}
-                  id="password" type="password" placeholder="Create your password"
-                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.password && touched.password ? "border-red-500" : ""}`}
-                />
-                {errors.password && touched.password && (
-                  <div className="text-red-500 text-s">{errors.password}</div>
-                )}
-              </div>
             </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
-                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address"> ADDRESS </label>
-                <input
-                  value={values.address} onChange={handleChange} onBlur={handleBlur}
-                  id="address" type="text" placeholder="Enter your address"
-                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
-                />
-                {errors.address && touched.address && (
-                  <div className="text-red-500 text-s">{errors.address}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
-                <DatePickerWrapper
-                  selected={values.birthday ? new Date(values.birthday) : null}
-                  onChange={(date) => {
-                    if (date && isValid(date)) {
-                      setFieldValue('birthday', format(date, 'MM/dd/yyyy'));
-                    } else {
-                      setFieldValue('birthday', '');
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  showMonthDropdown
-                  showYearDropdown
-                  minDate={new Date('1900-01-01')}
-                  maxDate={new Date('2014-12-31')}
-                  dateFormat="MM/dd/yyyy"
-                  id="birthday"
-                  placeholderText="MM/DD/YYYY"
-                  className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}
-                />
+                
+                  <DatePickerWrapper
+                    selected={values.birthday ? new Date(values.birthday) : null}
+                    onChange={(date) => {
+                      if (date && isValid(date)) {
+                        setFieldValue('birthday', format(date, 'MM/dd/yyyy'));
+                      } else {
+                        setFieldValue('birthday', '');
+                      }
+                    }}
+                    onBlur={handleBlur}
+                    showMonthDropdown
+                    showYearDropdown
+                    minDate={new Date('1900-01-01')}
+                    maxDate={new Date('2014-12-31')}
+                    dateFormat="MM/dd/yyyy"
+                    id="birthday"
+                    placeholderText="MM/DD/YYYY"
+                    className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-[8rem] rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.birthday && touched.birthday ? "border-red-500" : ""}`}
+                  />
+                
                 {errors.birthday && touched.birthday && (
                   <div className="text-red-500 text-s">{errors.birthday}</div>
                 )}
               </div>
-              <div className="w-full md:w-1/2 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender"> GENDER </label>
                 <div className="relative">
-                  <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     value={values.gender} onChange={handleChange} onBlur={handleBlur}
                     id="gender" style={{ cursor: 'pointer' }}>
                     <option value="" disabled>Select your gender</option>
@@ -246,9 +221,34 @@ const Register = () => {
                   <div className="text-red-500 text-s">{errors.gender}</div>
                 )}
               </div>
+              <div className="w-full md:w-1/3 px-3">
+                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password"> PASSWORD </label>
+                <input
+                  value={values.password} onChange={handleChange} onBlur={handleBlur}
+                  id="password" type="password" placeholder="Create your password"
+                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.password && touched.password ? "border-red-500" : ""}`}
+                />
+                {errors.password && touched.password && (
+                  <div className="text-red-500 text-s">{errors.password}</div>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3 mb-4">
+              <div className="w-full px-3">
+                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address"> ADDRESS </label>
+                <input
+                  value={values.address} onChange={handleChange} onBlur={handleBlur}
+                  id="address" type="text" placeholder="Enter your address"
+                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
+                />
+                {errors.address && touched.address && (
+                  <div className="text-red-500 text-s">{errors.address}</div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="image"> PROFILE IMAGE </label>
                 <input
@@ -256,7 +256,7 @@ const Register = () => {
                   id="image"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 />
                 {image && (
                   <div className="mt-2">
@@ -274,13 +274,14 @@ const Register = () => {
               <button 
                 disabled={isSubmitting}
                 type="submit"
-                className={`mt-3 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
+                className={`mt-2 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
                 ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
                 text-white rounded-lg text-center`}
               > {isSubmitting ? 'Submitting...' : 'Register'} </button>
             </div>
           </div>
         </FormContainer>
+
       </div>
     </div>
   );
