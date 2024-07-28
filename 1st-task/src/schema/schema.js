@@ -5,7 +5,7 @@ export const validationSchema = Yup.object().shape({
       .required("This field is required.")
       .test("name", "Invalid full name", (val) => {
         const words = val.trim().split(" ");
-        return words.length === 2;
+        return words.length >= 2;
       }),
     number: Yup.string()
       .test("len", "Must be 11 digits.", (val) => val && val.length === 11)
@@ -22,7 +22,7 @@ export const validationSchema = Yup.object().shape({
       .required("This field is required.")
       .test("address", "Invalid address", (val) => {
         const words = val.trim().split(" ");
-        return words.length === 2;
+        return words.length >= 2;
       }),
     birthday: Yup.string()
       .test("date", "Invalid birthday format. Please use mm/dd/yyyy.", (val) =>
