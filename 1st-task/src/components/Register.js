@@ -44,15 +44,14 @@ const Register = () => {
     const formattedValues = {
       ...values,
       birthday: formattedBirthday,
-      image: image ? image : null, // Save the Base64 string of the image
+      image: image ? image : null, 
     };
 
     const encryptedPassword = CryptoJS.AES.encrypt(
       formattedValues.password,
-      'internship' // Replace with your secret key
+      'internship' 
     ).toString();
   
-    // Replace the password with the encrypted password
     formattedValues.password = encryptedPassword;
 
     const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
@@ -75,7 +74,7 @@ const Register = () => {
     } else {
       existingUsers.push(formattedValues);
       localStorage.setItem('users', JSON.stringify(existingUsers));
-      localStorage.setItem('currentUser', existingUsers.length - 1); // Save the index of the current user
+      localStorage.setItem('currentUser', existingUsers.length - 1); 
       await new Promise(resolve => setTimeout(resolve, 2500));
       actions.resetForm();
       alert('You are now registered! Kindly login your account.');
@@ -102,7 +101,7 @@ const Register = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // Save the Base64 string of the image
+        setImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -262,7 +261,7 @@ const Register = () => {
                 {image && (
                   <div className="mt-2">
                     <img
-                      src={image} // Directly use the Base64 string
+                      src={image}
                       alt="Preview"
                       className="w-32 h-32 object-cover"
                     />
