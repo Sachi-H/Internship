@@ -39,7 +39,7 @@ const Profile = () => {
           </div>
         </nav>
 
-        <div className='bg-[#42bb71] min-h-[calc(100vh-90px)]'>
+        <div className='bg-[#42bb71] min-h-[calc(100vh-90px)] pb-10'>
           <h1 className='flex items-center justify-center text-white font-bold text-3xl p-5'> User Profile </h1>
 
           <div className="bg-white overflow-hidden shadow rounded-lg border max-w-md mx-auto">

@@ -26,6 +26,7 @@ const DatePickerWrapper = styled(DatePicker)`
 
 const Register = () => {
   const [image, setImage] = useState(null);
+  const [fileInputKey, setFileInputKey] = useState(0); 
 
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
@@ -104,7 +105,14 @@ const Register = () => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      setImage(null); 
     }
+  };
+
+  const handleCancel = () => {
+    setImage(null); 
+    setFileInputKey(fileInputKey + 1);
   };
 
   return (
@@ -251,13 +259,25 @@ const Register = () => {
             <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="image"> PROFILE IMAGE </label>
-                <input
-                  type="file"
-                  id="image"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                />
+                <div className='flex'>
+                  <input
+                    key={fileInputKey}
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  />
+                  {image && (
+                    <button
+                      type="button"
+                      onClick={handleCancel} 
+                      className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded ml-4"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
                 {image && (
                   <div className="mt-2">
                     <img
