@@ -27,6 +27,7 @@ const DatePickerWrapper = styled(DatePicker)`
 const Register = () => {
   const [image, setImage] = useState(null);
   const [fileInputKey, setFileInputKey] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
@@ -236,13 +237,37 @@ const Register = () => {
                 )}
               </div>
 
-              <div className="w-full md:w-1/3 px-3">
+              <div className="w-full md:w-1/3 px-3 relative">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="password"> PASSWORD </label>
                 <input
-                  value={values.password} onChange={handleChange} onBlur={handleBlur}
-                  id="password" type="password" placeholder="Enter your password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={values.password} onChange={handleChange} 
+                  onBlur={(e) => {
+                    if (e.relatedTarget && e.relatedTarget.id === 'show-password-button') {
+                      return;
+                    }
+                    handleBlur(e);
+                  }}
+                  id="password" placeholder="Create your password"
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.password && touched.password ? "border-red-500" : ""}`}
                 />
+                <button
+                  type="button"
+                  id="show-password-button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4  top-1/2 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.002 2.002l1.514 1.514a4 4 0 00-5.027-4.996z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                </button>
                 {errors.password && touched.password && (
                   <div className="text-red-500 text-s">{errors.password}</div>
                 )}
@@ -250,13 +275,13 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3 mb-6 md:mb-0">
+              <div className="w-full px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address"> ADDRESS </label>
-                <textarea
+                <input
                   value={values.address} onChange={handleChange} onBlur={handleBlur}
-                  id="address" rows="3" placeholder="Enter your address"
-                  className={`block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
-                ></textarea>
+                  id="address" type="text" placeholder="Enter your address"
+                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${errors.address && touched.address ? "border-red-500" : ""}`}
+                />
                 {errors.address && touched.address && (
                   <div className="text-red-500 text-s">{errors.address}</div>
                 )}
@@ -289,12 +314,13 @@ const Register = () => {
 
             <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full px-3 mb-6 md:mb-0">
-                <button
-                  type="submit"
-                  className="appearance-none block w-full bg-[#42bb71] hover:bg-[#69c98c] text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-[#69c98c] focus:border-gray-500"
+                <button 
                   disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Registering...' : 'REGISTER'}
+                  type="submit"
+                  className={`w-full mt-2 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
+                  ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
+                  text-white rounded-lg text-center`}
+                > {isSubmitting ? 'Processing your registration...' : 'REGISTER'} 
                 </button>
               </div>
             </div>
