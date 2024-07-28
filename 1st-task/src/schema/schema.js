@@ -18,7 +18,12 @@ export const validationSchema = Yup.object().shape({
     gender: Yup.string()
       .test("gender", "This field is required.", (val) => val!== "")
       .required("This field is required."),
-    address: Yup.string().required("This field is required."),
+    address: Yup.string()
+      .required("This field is required.")
+      .test("address", "Invalid address", (val) => {
+        const words = val.trim().split(" ");
+        return words.length === 2;
+      }),
     birthday: Yup.string()
       .test("date", "Invalid birthday format. Please use mm/dd/yyyy.", (val) =>
         val && /^(0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(19|20)\d{2}$/.test(val)
