@@ -1,7 +1,12 @@
 import * as Yup from "yup";
 
 export const validationSchema = Yup.object().shape({
-    fullname: Yup.string().required("This field is required."),
+    fullname: Yup.string()
+      .required("This field is required.")
+      .test("name", "Invalid full name", (val) => {
+        const words = val.trim().split(" ");
+        return words.length === 2;
+      }),
     number: Yup.string()
       .test("len", "Must be 11 digits.", (val) => val && val.length === 11)
       .test("number", "Must be a number.", (val) => val && !isNaN(val))      
