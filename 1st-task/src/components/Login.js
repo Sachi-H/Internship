@@ -34,24 +34,22 @@ const Login = () => {
       if ((user.email === values.loginCredential || user.number === values.loginCredential)) {
         try {
           const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'internship').toString(CryptoJS.enc.Utf8);
-          console.log('Decrypted Password:', decryptedPassword); // Debugging: Check decrypted password
+          console.log('Decrypted Password:', decryptedPassword); 
           if (decryptedPassword === values.password) {
             foundUser = user;
             localStorage.setItem('currentUser', index);
           }
         } catch (error) {
-          console.error('Decryption error:', error); // Debugging: Log any decryption errors
+          console.error('Decryption error:', error); 
         }
       }
     });
-
     if (foundUser) {
       await new Promise((resolve) => setTimeout(resolve, 2500));
       navigate('/profile', { replace: true });
     } else {
-      alert('Invalid login credential or password.');
+      alert('Invalid login credentials.');
     }
-
     actions.setSubmitting(false);
   };
 
