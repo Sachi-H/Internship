@@ -310,8 +310,8 @@ const Register = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3 mb-6 md:mb-0">
+            <div className="flex flex-wrap -mx-3">
+              <div className="w-full px-3">
                 <button 
                   disabled={isSubmitting} type="submit"
                   className={`w-full mt-2 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
