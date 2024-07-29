@@ -147,7 +147,7 @@ const Register = () => {
             </style>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="fullname"> FULL NAME </label>
                 <input
                   value={values.fullname} onChange={handleChange} onBlur={handleBlur}
@@ -183,7 +183,7 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <div className="w-full md:w-1/3 px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthday"> BIRTHDAY </label>
 
                 <DatePickerWrapper
@@ -286,7 +286,7 @@ const Register = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3 mb-6 md:mb-0">
+              <div className="w-full px-3">
                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">PROFILE PICTURE</label>
                 <input
                   key={fileInputKey}
