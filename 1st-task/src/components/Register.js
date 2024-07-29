@@ -143,9 +143,6 @@ const Register = () => {
                   max-height: 250px;
                   overflow-y: auto;
                 }
-                .react-datepicker__triangle {
-                  display: none;
-                }
               `}
             </style>
 
@@ -201,9 +198,9 @@ const Register = () => {
                   onBlur={handleBlur}
                   showMonthDropdown
                   showYearDropdown
-                  yearDropdownItemNumber={50}
+                  yearDropdownItemNumber={100}
                   scrollableYearDropdown
-                  minDate={new Date('1900-01-01')}
+                  minDate={new Date('1924-01-01')}
                   maxDate={new Date('2014-12-31')}
                   dateFormat="MM/dd/yyyy"
                   id="birthday"
@@ -298,14 +295,15 @@ const Register = () => {
                   type="file"
                 />
                 {image && (
-                  <div className="mt-4 relative">
+                  <div className="mt-4 flex items-center">
                     <img src={image} alt="Profile" className="w-40 h-40 rounded-full object-cover" />
                     <button
-                      type="button"
-                      onClick={handleCancel}
-                      className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full p-1"
+                      type="button" onClick={handleCancel}
+                      className="mb-24 bg-red-500 text-white rounded-full p-1"
                     >
-                      <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 8.586l2.828-2.829a1 1 0 111.415 1.415L11.414 10l2.829 2.828a1 1 0 01-1.415 1.415L10 11.414l-2.828 2.829a1 1 0 11-1.415-1.415L8.586 10 5.757 7.172a1 1 0 111.415-1.415L10 8.586z"/></svg>
+                      <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M10 8.586l2.828-2.829a1 1 0 111.415 1.415L11.414 10l2.829 2.828a1 1 0 01-1.415 1.415L10 11.414l-2.828 2.829a1 1 0 11-1.415-1.415L8.586 10 5.757 7.172a1 1 0 111.415-1.415L10 8.586z"/>
+                      </svg>
                     </button>
                   </div>
                 )}
@@ -315,8 +313,7 @@ const Register = () => {
             <div className="flex flex-wrap -mx-3 mb-4">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <button 
-                  disabled={isSubmitting}
-                  type="submit"
+                  disabled={isSubmitting} type="submit"
                   className={`w-full mt-2 px-6 py-3 font-medium ${isSubmitting ? 'bg-gray-500' : 'bg-[#42bb71]'} 
                   ${isSubmitting ? '' : 'hover:bg-white hover:shadow-[inset_0_0_0_2px_#42bb71] hover:text-[#42bb71]'} 
                   text-white rounded-lg text-center`}
