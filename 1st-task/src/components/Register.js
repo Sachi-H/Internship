@@ -198,10 +198,10 @@ const Register = () => {
                   onBlur={handleBlur}
                   showMonthDropdown
                   showYearDropdown
-                  yearDropdownItemNumber={100}
+                  yearDropdownItemNumber={130}
                   scrollableYearDropdown
-                  minDate={new Date('1924-01-01')}
-                  maxDate={new Date('2014-12-31')}
+                  minDate={new Date('1900-01-01')}
+                  maxDate={new Date('2024-12-31')}
                   dateFormat="MM/dd/yyyy"
                   id="birthday"
                   placeholderText="MM/DD/YYYY"

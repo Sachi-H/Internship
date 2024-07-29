@@ -40,6 +40,18 @@ export const validationSchema = Yup.object().shape({
         }
         return age >= 18;
       })
+      .test("age", "Year doesn't exist/Age exceeds the limit.", (val) => {
+        const birthdayParts = val.split("/");
+        const birthdayYear = parseInt(birthdayParts[2], 10);
+        const birthdayMonth = parseInt(birthdayParts[0], 10);
+        const birthdayDay = parseInt(birthdayParts[1], 10);
+        const today = new Date();
+        let age = today.getFullYear() - birthdayYear;
+        if (birthdayMonth > today.getMonth() || (birthdayMonth === today.getMonth() && birthdayDay > today.getDate())) {
+          age--;
+        }
+        return age <= 100;
+      })
       .required("This field is required."),
     password: Yup.string()
       .min(8, "Password must be at least 8 characters.")
