@@ -252,7 +252,7 @@ const Register = () => {
                   type="button"
                   id="show-password-button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4  top-1/2 transform -translate-y-1/2 text-gray-600"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
